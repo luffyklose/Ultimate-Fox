@@ -31,6 +31,7 @@ public class PlayerBehaviour : MonoBehaviour
     public List<AudioSource> audioSources;
     public AudioSource jumpSound;
     public AudioSource hitSound;
+    public AudioSource getGemSound;
 
     [Header("Dust Trail")] 
     public ParticleSystem dustTrail;
@@ -51,9 +52,14 @@ public class PlayerBehaviour : MonoBehaviour
     public int maxHP;
     private int HP;
     private bool isFacingRight = true;
+    private bool isInvincible = false;
+    public float invincibleTime;
+    private float invincibleCounter = 0.0f;
+    private int gemCount = 0;
 
     [Header("UI")] 
     public Text lifeCount;
+    public Text gemCountText;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +74,7 @@ public class PlayerBehaviour : MonoBehaviour
         audioSources = GetComponents<AudioSource>().ToList();
         jumpSound = audioSources[0];
         hitSound = audioSources[1];
+        getGemSound = audioSources[2];
 
         dustTrail = GetComponentInChildren<ParticleSystem>();
 
@@ -75,6 +82,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         HP = maxHP;
         lifeCount.text = "x " + HP.ToString();
+        gemCountText.text = "x " + gemCount.ToString();
     }
 
     void Update()
@@ -86,7 +94,20 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Move();
+        if (!isInvincible)
+        {
+            Move();
+        }
+        else
+        {
+            invincibleCounter += Time.deltaTime;
+            if (invincibleCounter >= invincibleTime)
+            {
+                invincibleCounter = 0.0f;
+                isInvincible = false;
+            }
+        }
+        
         CheckIfGrounded();
 
         // Camera Shake Control
@@ -202,12 +223,14 @@ public class PlayerBehaviour : MonoBehaviour
     {
         rigidbody.velocity = new Vector2(10.0f, 20.0f);
         GetComponent<Collider2D>().isTrigger = true;
+        //Destroy(rigidbody);
     }
 
     private void GetHit()
     {
         HP--;
         lifeCount.text = "x " + HP.ToString();
+        isInvincible = true;
         if (HP <= 0)
         {
             Death();
@@ -218,14 +241,14 @@ public class PlayerBehaviour : MonoBehaviour
             if (isFacingRight)
             {
                 Debug.Log("右边画一道彩虹");
-                //rigidbody.velocity = new Vector2(-50.0f, 50.0f);
-                rigidbody.AddForce(new Vector2(-100.0f,-100.0f));
+                rigidbody.velocity = new Vector2(-10.0f, 10.0f);
+                //rigidbody.AddForce(new Vector2(-100.0f, -100.0f), ForceMode2D.Impulse);
             }
             else
             {
                 Debug.Log("左边画个郭富城");
-                //rigidbody.velocity = new Vector2(50.0f, 50.0f);
-                rigidbody.AddForce(new Vector2(100.0f,100.0f));
+                rigidbody.velocity = new Vector2(10.0f, 10.0f);
+                //rigidbody.AddForce(new Vector2(100.0f, 100.0f), ForceMode2D.Impulse);
             }
         }
     }
@@ -234,6 +257,13 @@ public class PlayerBehaviour : MonoBehaviour
     {
         HP--;
         lifeCount.text = "x " + HP.ToString();
+    }
+
+    public void GetGem()
+    {
+        gemCount++;
+        gemCountText.text = "x " + gemCount.ToString();
+        getGemSound.Play();
     }
 
     // EVENTS
@@ -263,7 +293,7 @@ public class PlayerBehaviour : MonoBehaviour
                 other.gameObject.GetComponent<EnemyController>().Death();
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, 20.0f);
             }
-            else
+            else if(!isInvincible)
             {
                 Debug.Log("Not Hit!");
                 GetHit();
