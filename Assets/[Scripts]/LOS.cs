@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,16 +21,27 @@ public class LOS : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        foreach (var collider in colliderList)
+        {
+            if (collider == null)
+                colliderList.Remove(collider);
+        }
+    }
+
     void FixedUpdate()
     {
         Physics2D.GetContacts(LOSCollider, contactFilter, colliderList);
+       
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.gameObject.CompareTag("Bullet"))
+        if (!other.gameObject.CompareTag("Bullet") && !other.gameObject.CompareTag("Fireball"))
         {
             collidesWith = other;
+            //Debug.Log(other+" add");
         }
     }
 }

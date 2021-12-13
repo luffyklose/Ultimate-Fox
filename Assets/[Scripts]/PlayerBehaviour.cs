@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,6 +58,14 @@ public class PlayerBehaviour : MonoBehaviour
     private float invincibleCounter = 0.0f;
     private int gemCount = 0;
 
+    [Header("Attack")] 
+    public GameObject fireballPrefab;
+    public float fireballFlySpeed;
+    public float fireCD;
+    public bool canFire = true;
+    private float fireCounter;
+    public Transform fireballSpawn;
+
     [Header("UI")] 
     public Text lifeCount;
     public Text gemCountText;
@@ -87,7 +96,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void Update()
     {
-        
+        Fire();
     }
     
 
@@ -107,7 +116,7 @@ public class PlayerBehaviour : MonoBehaviour
                 isInvincible = false;
             }
         }
-        
+
         CheckIfGrounded();
 
         // Camera Shake Control
@@ -177,10 +186,38 @@ public class PlayerBehaviour : MonoBehaviour
                 float horizontalMoveForce = x * horizontalForce * airControlFactor;
                 float mass = rigidbody.mass * rigidbody.gravityScale;
 
-                //rigidbody.AddForce(new Vector2(horizontalMoveForce, 0.0f) * mass);
+                rigidbody.AddForce(new Vector2(horizontalMoveForce, 0.0f) * mass);
             }
         }
 
+    }
+
+    public void Fire()
+    {
+        //float fire = (Input.GetKeyDown(KeyCode.A) || ((UIController.attackButtonDown)) ? 1.0f : 0.0f);
+        if (Input.GetKeyDown(KeyCode.Z) || UIController.attackButtonDown)
+        {
+            Debug.Log("Fire");
+            if (canFire)
+            {
+                var tempFireball = Instantiate(fireballPrefab, fireballSpawn.position, quaternion.identity);
+                tempFireball.GetComponent<Fireball>().direction =
+                    Vector3.Normalize(new Vector3(fireballSpawn.position.x - transform.position.x, 0.0f, 0.0f));
+                //tempFireball.SetVelocity(new Vector2(fireballFlySpeed,0.0f));
+                canFire = false;
+                Debug.Log(tempFireball);
+            }
+        }
+
+        if (!canFire)
+        {
+            fireCounter += Time.deltaTime;
+            if (fireCounter >= fireCD)
+            {
+                fireCounter = 0.0f;
+                canFire = true;
+            }
+        }
     }
 
     private void CheckIfGrounded()

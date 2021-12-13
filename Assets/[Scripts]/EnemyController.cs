@@ -98,8 +98,9 @@ public class EnemyController : MonoBehaviour
 
     private void LookInFront()
     {
-        var hit = Physics2D.Linecast(transform.position, lookInFrontPoint.position, wallLayerMask);
-        if (hit)
+        var hit1 = Physics2D.Linecast(transform.position, lookInFrontPoint.position, wallLayerMask);
+        var hit2=Physics2D.Linecast(transform.position, lookInFrontPoint.position, groundLayerMask);
+        if (hit1 || hit2)
         {
             Flip();
         }
@@ -142,6 +143,12 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("Platform"))
         {
             transform.SetParent(other.transform);
+        }
+        else if (other.gameObject.CompareTag("Fireball"))
+        {
+            Death();
+            Destroy(other.gameObject);
+            Debug.Log("Fireball hit");
         }
     }
 
