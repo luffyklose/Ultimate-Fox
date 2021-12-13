@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: DeathPlaneController.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/10/2021
+//Description : Class for death plane
+//Revision History:
+//10/22/2021: Implement feature of killing enemies and player
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +29,7 @@ public class DeathPlaneController : MonoBehaviour
         }
     }
 
+    //Kill enemy and player when colliding with them
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))

@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: Gem.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/12/2021
+//Description : Class for Gem
+//Revision History:
+//12/12/2021: Implement feature of collecting gems
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,11 +15,10 @@ using UnityEngine;
 
 public class Gem : MonoBehaviour
 {
-    public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        
     }
 
     // Update is called once per frame

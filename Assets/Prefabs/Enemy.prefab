@@ -504,12 +504,12 @@ MonoBehaviour:
   isGroundAhead: 0
   animatorController: {fileID: 0}
   bulletSpawn: {fileID: 7478503407551663287}
-  fireDelay: 200
+  fireDelay: 100
   player: {fileID: 0}
   bulletPrefab: {fileID: 2207681145639796414, guid: 278cf6d11d4ac084ca8edd2f6954411e, type: 3}
   spitSound: {fileID: 0}
-  gemPrefab: {fileID: 0}
-  gemGenerateProbility: 50
+  gemPrefab: {fileID: 7780438353112001703, guid: 0598972bf026f024aac98a469155f3f9, type: 3}
+  gemGenerateProbility: 0.5
 --- !u!1 &4712367541516968545
 GameObject:
   m_ObjectHideFlags: 0

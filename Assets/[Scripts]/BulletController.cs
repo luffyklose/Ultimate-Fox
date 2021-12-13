@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: Door.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/10/2021
+//Description : Class for enemies's bullets
+//Revision History:
+//12/20/2021: Implement feature of bullets moving and hitting players
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +36,7 @@ public class BulletController : MonoBehaviour
         MoveBullet();
     }
 
+    //Bullet moves automatically based on direction
     private void MoveBullet()
     {
         direction.z = 0.0f;
@@ -34,6 +44,7 @@ public class BulletController : MonoBehaviour
     }
 
 
+    //Destroy when colliding with platform and player.
     private void OnTriggerEnter2D(Collider2D other)
     {
         switch (other.gameObject.tag)
@@ -43,7 +54,7 @@ public class BulletController : MonoBehaviour
                 break;
             case "Player":
                 Destroy(this.gameObject);
-                other.GetComponent<PlayerBehaviour>().DecreseHP();
+                other.GetComponent<PlayerBehaviour>().GetHit();
                 break;
         }
     }

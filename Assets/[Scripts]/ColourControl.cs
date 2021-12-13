@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: ColourControl.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/10/2021
+//Description : Class for color control
+//Revision History:
+//12/10/2021: Implement feature of coloring special platform
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +25,7 @@ public class ColourControl : MonoBehaviour
         ChangeColour();
     }
 
+    //Change color to default color by modifying renderer
     private void ChangeColour()
     {
         foreach (var renderer in renderers)
@@ -24,6 +34,7 @@ public class ColourControl : MonoBehaviour
         }
     }
 
+    //Change color to new color by modifying renderer
     public void ChangeColour(Color color  = new Color())
     {
         foreach (var renderer in renderers)

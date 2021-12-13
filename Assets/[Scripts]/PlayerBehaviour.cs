@@ -1,3 +1,22 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: Player.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/12/2021
+//Description : Class for Player
+//Revision History:
+//12/10/2021:
+//Implement basic movement
+//Implement touch control
+//12/11/2021:
+//Implement basic attack;
+//Set basic data;
+//Implement HP and score UI display;
+//Implement hurt and death;
+//12/12/2021:
+//Add sound effect;
+//Add feature of shooting fireball
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +24,7 @@ using Cinemachine;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour
@@ -33,6 +53,9 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource jumpSound;
     public AudioSource hitSound;
     public AudioSource getGemSound;
+    public AudioSource stampEnemySound;
+    public AudioSource blockBreakSound;
+    
 
     [Header("Dust Trail")] 
     public ParticleSystem dustTrail;
@@ -84,6 +107,8 @@ public class PlayerBehaviour : MonoBehaviour
         jumpSound = audioSources[0];
         hitSound = audioSources[1];
         getGemSound = audioSources[2];
+        stampEnemySound = audioSources[3];
+        blockBreakSound = audioSources[4];
 
         dustTrail = GetComponentInChildren<ParticleSystem>();
 
@@ -264,13 +289,14 @@ public class PlayerBehaviour : MonoBehaviour
     {
         rigidbody.velocity = new Vector2(10.0f, 20.0f);
         GetComponent<Collider2D>().isTrigger = true;
-        //Destroy(rigidbody);
+        GameObject.Find("GameController").GetComponent<LevelData>().isWin = true;
+        GameObject.Find("GameController").GetComponent<LevelData>().Gem = GetGemCount();
+        SceneManager.LoadScene("GameOver");
     }
 
-    private void GetHit()
+    public void GetHit()
     {
-        HP--;
-        lifeCount.text = "x " + HP.ToString();
+        DecreseHP();
         isInvincible = true;
         if (HP <= 0)
         {
@@ -281,13 +307,13 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Diao Xue");
             if (isFacingRight)
             {
-                Debug.Log("右边画一道彩虹");
+                //Debug.Log("右边画一道彩虹");
                 rigidbody.velocity = new Vector2(-10.0f, 10.0f);
                 //rigidbody.AddForce(new Vector2(-100.0f, -100.0f), ForceMode2D.Impulse);
             }
             else
             {
-                Debug.Log("左边画个郭富城");
+                //Debug.Log("左边画个郭富城");
                 rigidbody.velocity = new Vector2(10.0f, 10.0f);
                 //rigidbody.AddForce(new Vector2(100.0f, 100.0f), ForceMode2D.Impulse);
             }
@@ -305,6 +331,11 @@ public class PlayerBehaviour : MonoBehaviour
         gemCount++;
         gemCountText.text = "x " + gemCount.ToString();
         getGemSound.Play();
+    }
+
+    public void PlayBlockBreakSound()
+    {
+        blockBreakSound.Play();
     }
 
     // EVENTS
@@ -328,15 +359,16 @@ public class PlayerBehaviour : MonoBehaviour
                 RaycastHit2D hit3 = Physics2D.Raycast(
                     new Vector2(groundOrigin.position.x - 0.2f, groundOrigin.position.y),
                     Vector2.down, groundRadius, enemyLayerMask);
-            if (hit1 || hit2 || hit3)
+            if ((hit1 || hit2 || hit3) && other.gameObject.GetComponent<EnemyController>().IsAlive)
             {
-                Debug.Log("Hit!");
+                //Debug.Log("Hit!");
                 other.gameObject.GetComponent<EnemyController>().Death();
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, 20.0f);
+                stampEnemySound.Play();
             }
             else if(!isInvincible)
             {
-                Debug.Log("Not Hit!");
+                //Debug.Log("Not Hit!");
                 GetHit();
             }
         }
@@ -357,6 +389,11 @@ public class PlayerBehaviour : MonoBehaviour
             hitSound.Play();
             ShakeCamera();
         }
+    }
+
+    public int GetGemCount()
+    {
+        return gemCount;
     }
 
    

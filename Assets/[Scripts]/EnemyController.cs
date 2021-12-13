@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: EnemyController.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/12/2021
+//Description : Class for doors
+//Revision History:
+//12/10/2021: Implement basic movement and auto attack based on LOS
+//12/12/2021: Modify LOS logic when the collided object is destroyed
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +38,12 @@ public class EnemyController : MonoBehaviour
     private Rigidbody2D rigidbody;
     public GameObject gemPrefab;
     public float gemGenerateProbility;
+    private bool isAlive = true;
 
+    public bool IsAlive
+    {
+        get { return isAlive; }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -173,6 +188,7 @@ public class EnemyController : MonoBehaviour
         }
         rigidbody.velocity = new Vector2(10.0f, 20.0f);
         GetComponent<Collider2D>().isTrigger = true;
+        isAlive = false;
     }
 
     // UTILITIES

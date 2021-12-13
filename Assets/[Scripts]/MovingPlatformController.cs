@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: MovingPlatformController.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/10/2021
+//Description : Class for moving platform
+//Revision History:
+//12/12/2021: Implement feature of platform moving on specific direction
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +43,7 @@ public class MovingPlatformController : MonoBehaviour
         }
     }
 
+    //Moving platform to specific direction
     private void MovePlatform()
     {
         float pingPongValue = (isMoving) ? Mathf.PingPong(Time.time * speed, distance) : distance;

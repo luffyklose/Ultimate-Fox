@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FileName: LOS.cs
+//Author: Zihan Xu
+//Student Number: 101288760
+//Last Modified On : 12/10/2021
+//Description : Class for enemy's LOS
+//Revision History:
+//12/10/2021: Update enemy's LOS list when the trigger colliding with other objects
+//12/12/2021: Modify negligible object
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +33,7 @@ public class LOS : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        //remove null objects
         foreach (var collider in colliderList)
         {
             if (collider == null)
@@ -38,7 +49,8 @@ public class LOS : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.gameObject.CompareTag("Bullet") && !other.gameObject.CompareTag("Fireball"))
+        //ignore object which could destroy like fireball/gem/bullet
+        if (!other.gameObject.CompareTag("Bullet") && !other.gameObject.CompareTag("Fireball") && !other.gameObject.CompareTag("Item"))
         {
             collidesWith = other;
             //Debug.Log(other+" add");
