@@ -122,6 +122,16 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         Fire();
+        if(isInvincible)
+        {
+            invincibleCounter += Time.deltaTime;
+            if (invincibleCounter >= invincibleTime)
+            {
+                invincibleCounter = 0.0f;
+                isInvincible = false;
+            }
+        }
+
     }
     
 
@@ -131,15 +141,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (!isInvincible)
         {
             Move();
-        }
-        else
-        {
-            invincibleCounter += Time.deltaTime;
-            if (invincibleCounter >= invincibleTime)
-            {
-                invincibleCounter = 0.0f;
-                isInvincible = false;
-            }
         }
 
         CheckIfGrounded();
