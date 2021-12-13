@@ -74,6 +74,7 @@ public class EnemyController : MonoBehaviour
         
     }
 
+    //Check if enemy see player
     private bool HasLOS()
     {
         if (enemyLOS.colliderList.Count > 0)
@@ -107,12 +108,14 @@ public class EnemyController : MonoBehaviour
     }
 
 
+    //Check if there's way for enemy walking
     private void LookAhead()
     {
         var hit = Physics2D.Linecast(transform.position, lookAheadPoint.position, groundLayerMask);
         isGroundAhead = (hit) ? true : false;
     }
 
+    //Check if there's any block in front of enemy
     private void LookInFront()
     {
         var hit1 = Physics2D.Linecast(transform.position, lookInFrontPoint.position, wallLayerMask);
@@ -123,6 +126,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //Enemy's movement
     private void MoveEnemy()
     {
         if (isGroundAhead)
@@ -177,6 +181,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //Enemy falls after death
     public void Death()
     {
         if (Random.Range(0.0f,1.0f) <= gemGenerateProbility)

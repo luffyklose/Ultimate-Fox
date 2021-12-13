@@ -19,4 +19,9 @@ public class MenuController : MonoBehaviour
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void OnInstructionButton_Pressed()
+    {
+        SceneManager.LoadScene("Instruction");
+    }
 }

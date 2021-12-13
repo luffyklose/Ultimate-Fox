@@ -157,6 +157,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Get input of moving and jump, move the player and set correct animation
     private void Move()
     {
         float x = (Input.GetAxisRaw("Horizontal") + joystick.Horizontal) * sensitivity ;
@@ -217,12 +218,13 @@ public class PlayerBehaviour : MonoBehaviour
 
     }
 
+    //Get fire input,  generate and initialize fireball, update fire counter
     public void Fire()
     {
         //float fire = (Input.GetKeyDown(KeyCode.A) || ((UIController.attackButtonDown)) ? 1.0f : 0.0f);
         if (Input.GetKeyDown(KeyCode.Z) || UIController.attackButtonDown)
         {
-            Debug.Log("Fire");
+            //Debug.Log("Fire");
             if (canFire)
             {
                 var tempFireball = Instantiate(fireballPrefab, fireballSpawn.position, quaternion.identity);
@@ -234,7 +236,7 @@ public class PlayerBehaviour : MonoBehaviour
                 }
                 //tempFireball.SetVelocity(new Vector2(fireballFlySpeed,0.0f));
                 canFire = false;
-                Debug.Log(tempFireball);
+                //Debug.Log(tempFireball);
             }
         }
 
@@ -249,6 +251,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //check if the player is on ground using ray cast
     private void CheckIfGrounded()
     {
         RaycastHit2D hit = Physics2D.CircleCast(groundOrigin.position, groundRadius, Vector2.down, groundRadius, groundLayerMask);
@@ -256,6 +259,7 @@ public class PlayerBehaviour : MonoBehaviour
         isGrounded = (hit) ? true : false;
     }
 
+    //flip animation in x-axis
     private float FlipAnimation(float x)
     {
         // depending on direction scale across the x-axis either 1 or -1
@@ -283,8 +287,10 @@ public class PlayerBehaviour : MonoBehaviour
     {
         perlin.m_AmplitudeGain = shakeIntensity;
         isCameraShaking = true;
+        Debug.Log("Shake!");
     }
 
+    //Player falling when dying, store level data and go to game over scene
     private void Death()
     {
         rigidbody.velocity = new Vector2(10.0f, 20.0f);
@@ -294,6 +300,7 @@ public class PlayerBehaviour : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
+    //Update HP, set player invincible and step back
     public void GetHit()
     {
         DecreseHP();
@@ -304,7 +311,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            Debug.Log("Diao Xue");
+            //Debug.Log("Diao Xue");
             if (isFacingRight)
             {
                 //Debug.Log("右边画一道彩虹");
@@ -320,12 +327,14 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    //Decrese HP
     public void DecreseHP()
     {
         HP--;
         lifeCount.text = "x " + HP.ToString();
     }
 
+    //Get a gem and update UI
     public void GetGem()
     {
         gemCount++;
@@ -333,6 +342,7 @@ public class PlayerBehaviour : MonoBehaviour
         getGemSound.Play();
     }
 
+    //Play sound when player breaks a block
     public void PlayBlockBreakSound()
     {
         blockBreakSound.Play();
@@ -340,6 +350,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     // EVENTS
 
+    //Detect if player stamp enemies or get hit by enemies
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
