@@ -26,6 +26,8 @@ public class EnemyController : MonoBehaviour
     public AudioSource spitSound;
 
     private Rigidbody2D rigidbody;
+    public GameObject gemPrefab;
+    public float gemGenerateProbility;
 
     // Start is called before the first frame update
     void Start()
@@ -162,6 +164,13 @@ public class EnemyController : MonoBehaviour
 
     public void Death()
     {
+        if (Random.Range(0.0f,1.0f) <= gemGenerateProbility)
+        {
+            var tempGem = Instantiate(gemPrefab,
+                new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z),
+                Quaternion.identity);
+            tempGem.GetComponent<Gem>().GetComponent<Rigidbody2D>().velocity = Vector2.up * 1.0f;
+        }
         rigidbody.velocity = new Vector2(10.0f, 20.0f);
         GetComponent<Collider2D>().isTrigger = true;
     }

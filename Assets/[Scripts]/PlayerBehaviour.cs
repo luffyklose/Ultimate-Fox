@@ -203,6 +203,10 @@ public class PlayerBehaviour : MonoBehaviour
                 var tempFireball = Instantiate(fireballPrefab, fireballSpawn.position, quaternion.identity);
                 tempFireball.GetComponent<Fireball>().direction =
                     Vector3.Normalize(new Vector3(fireballSpawn.position.x - transform.position.x, 0.0f, 0.0f));
+                if (tempFireball.GetComponent<Fireball>().direction.x < 0.0f)
+                {
+                    tempFireball.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+                }
                 //tempFireball.SetVelocity(new Vector2(fireballFlySpeed,0.0f));
                 canFire = false;
                 Debug.Log(tempFireball);

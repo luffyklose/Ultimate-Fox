@@ -22,6 +22,7 @@ public class BigCastle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Win");
             SceneManager.LoadScene("GameOver");
         }
     }

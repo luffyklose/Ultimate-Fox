@@ -12,6 +12,7 @@ public class DeathPlaneController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             other.transform.position = playerSpawnPoint.position;
+            other.gameObject.GetComponent<PlayerBehaviour>().DecreseHP();
         }
         else
         {

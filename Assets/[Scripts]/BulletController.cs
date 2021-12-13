@@ -43,6 +43,7 @@ public class BulletController : MonoBehaviour
                 break;
             case "Player":
                 Destroy(this.gameObject);
+                other.GetComponent<PlayerBehaviour>().DecreseHP();
                 break;
         }
     }
